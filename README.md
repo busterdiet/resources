@@ -1,2 +1,2 @@
-# My Repo for cloud storgage
+# My Repo for cloud storage
 
