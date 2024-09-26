@@ -1,0 +1,63 @@
+---
+title: "SBL"
+author: "Justin Dietrich"
+date: '`r Sys.Date()`'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(FNN)
+```
+
+# Tutorial SBL
+Write a function (my_csv_reader) to read a csv file and return a dataframe of all the
+instances in the dataset represented by the csv file. The csv file path should be specified by
+a parameter to the function.
+```{r}
+my_csv_reader <- function(file_path){
+  data <- read.csv(file_path, header=TRUE, sep=",")
+  return(data)
+}
+```
+
+Write a function (my_separate_X_y) to separate a dataframe D into two dataframes X and y
+then return a list that can be indexed to get X and y. X should contain descriptive features of
+all instances in D and y should contain the target features of all instances in D. The
+dataframe D should be specified by a parameter of the function.
+```{r}
+my_separate_X_y <- function(data){
+  X <- data[,1:(ncol(data)-1)]
+  y <- data[,ncol(data)]
+  return(list(X=X, y=y))
+}
+```
+
+Explore the FNN library which contains an implementation of KNNs using KDTrees. Write a
+function (my_KNN_classifications) that calls the knn function from FANN and uses it to
+display classification results using the KDTree algorithm. The function should accept X, q, y,
+and k as parameters. Where X is a dataframe of training instance descriptive features, q is a
+dataframe of test instance descriptive features, y is a factor of training instance target
+features and k is the number of neighbours to use.
+```{r}
+my_KNN_classifications <- function(X, q, y, k){
+  
+  knn_res <- knn(X, q, y, k)
+  return(knn_res)
+}
+```
+
+Test your functions on a csv file representing a classification dataset with no missing values.
+Use 5 as your random number seed before calling any functions in your code.
+```{r}
+set.seed(5)
+data <- my_csv_reader("iris.csv")
+data_separated <- my_separate_X_y(data)
+X <- data_separated$X
+y <- data_separated$y
+q <- X[1:5,]
+k <- 3
+knn_res <- my_KNN_classifications(X, q, y, k)
+print(knn_res)
+```
+
